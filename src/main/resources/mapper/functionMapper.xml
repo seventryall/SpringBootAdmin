@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.springbootadmin.mapper.FunctionMapper" >
+    <resultMap id="FuncResultMap" type="com.sj.springbootadmin.entity.Function" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderID" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <select id="getAllFunction" resultMap="FuncResultMap">
+        select id,name,code,order_id,create_time
+        from sys_function where is_deleted is null or is_deleted=0
+    </select>
+</mapper>

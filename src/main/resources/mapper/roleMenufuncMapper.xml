@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.springbootadmin.mapper.RoleMenuFuncMapper" >
+    <resultMap id="RoleMenuFuncResultMap" type="com.sj.springbootadmin.entity.RoleMenuFunction" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="menu_id" property="menuID" jdbcType="INTEGER" />
+        <result column="function_id" property="functionID" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <resultMap id="RoleMenuFuncResultMap2" type="com.sj.springbootadmin.entity.RoleMenuFunction"
+    extends="RoleMenuFuncResultMap">
+        <association property="menu" javaType="com.sj.springbootadmin.entity.Menu">
+        <id column="menu_id" property="id"/>
+        <result column="url" property="url"/>
+        </association>
+        <association property="function" javaType="com.sj.springbootadmin.entity.Function">
+        <id column="function_id" property="id"/>
+        <result column="code" property="code"/>
+        </association>
+    </resultMap>
+    <select id="getUserAllAuthMenuFunc" resultMap="RoleMenuFuncResultMap">
+       select distinct menu_id,function_id from sys_role_menu_function
+                        where role_id in
+                        (select role_id from sys_user_role where user_id=#{userID})
+    </select>
+    <select id="getUserAllAuthMenuFuncView" resultMap="RoleMenuFuncResultMap2">
+        select c.menu_id,c.function_id,a.url,b.code
+        from sys_menu a,
+        sys_function b,
+       (select distinct menu_id,function_id from sys_role_menu_function
+                        where role_id in
+                        (select role_id from sys_user_role where user_id=#{userID})) c
+        where a.id=c.menu_id and b.id=c.function_id
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.springbootadmin.mapper.RoleMapper" >
+    <resultMap id="RoleResultMap" type="com.sj.springbootadmin.entity.Role" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <select id="getAllRole" resultMap="RoleResultMap">
+        select id,name,code,remark,create_time
+        from sys_role where is_deleted is null or is_deleted=0
+    </select>
+    <select id="getUserRoles" resultMap="RoleResultMap" parameterType="java.lang.Integer">
+        select r.*
+        from sys_role r join sys_user_role ur
+        on r.id=ur.role_id
+        where ur.user_id =#{userID} and
+        (r.is_deleted is null or r.is_deleted=0)
+    </select>
+</mapper>

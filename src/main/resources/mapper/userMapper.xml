@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sj.springbootadmin.mapper.UserMapper" >
+    <resultMap id="UserResultMap" type="com.sj.springbootadmin.entity.User" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="INTEGER" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="is_admin" property="isAdmin" jdbcType="BOOLEAN" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+    <select id="getUserAll" resultMap="UserResultMap">
+        select id,user_name,user_pwd,real_name,age,phone,email,is_admin,create_time
+        from sys_user where is_deleted is null or is_deleted=0
+    </select>
+    <select id="getUser" resultMap="UserResultMap">
+        select *
+        from sys_user where user_name =#{userName} and user_pwd=#{userPwd} and
+        (is_deleted is null or is_deleted=0)
+    </select>
+    <select id="getUserByUserName" resultMap="UserResultMap">
+        select *
+        from sys_user where user_name =#{userName} and
+        (is_deleted is null or is_deleted=0)
+    </select>
+</mapper>
